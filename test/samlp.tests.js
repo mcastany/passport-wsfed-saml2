@@ -634,7 +634,7 @@ describe('samlp (unit tests)', function () {
 
     it('should return error for Destination does not match', function(done){
       var samlp = new Samlp({});
-      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { requestID: 'response', destination: 'invalid' }, function (err) {
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { requestID: 'response', identityProviderUrl: 'invalid' }, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('Error');
         expect(err.message).to.equal('Destination does not match');
