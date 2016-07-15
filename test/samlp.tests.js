@@ -622,9 +622,9 @@ describe('samlp (unit tests)', function () {
       });
     });
 
-    it.only('should return error when InResponseTo does not match request id', function(done){
+    it('should return error when InResponseTo does not match request id', function(done){
       var samlp = new Samlp({});
-      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { requestID: 'invalid' }, function (err) {
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { request_id: 'invalid' }, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('Error');
         expect(err.message).to.equal('Response doesn\'t match any request');
@@ -634,7 +634,7 @@ describe('samlp (unit tests)', function () {
 
     it('should return error for Destination does not match', function(done){
       var samlp = new Samlp({});
-      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { requestID: 'response', identityProviderUrl: 'invalid' }, function (err) {
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, { request_id: 'response', identityProviderUrl: 'invalid' }, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('Error');
         expect(err.message).to.equal('Destination does not match');
