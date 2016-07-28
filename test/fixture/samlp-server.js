@@ -4,6 +4,7 @@ var samlp = require('samlp');
 var xtend = require('xtend');
 var fs = require('fs');
 var path = require('path');
+var xpath = require('xpath');
 
 var passport = require('passport');
 var Strategy = require('../../lib/passport-wsfed-saml2').Strategy;
@@ -174,6 +175,31 @@ passport.use('samlp-okta', new Strategy(
   })
 );
 
+var used_ids = [];
+
+passport.use('samlp-okta-extra-validation', new Strategy(
+  {
+    path: '/callback',
+    realm: 'https://auth0145.auth0.com',
+    thumbprints: ['a0c7dbb790e3476d3c5dd236f9f2060b1fd6e253'],
+    destinationUrl: 'https://auth0145.auth0.com',
+    recipientUrl: 'https://auth0145.auth0.com',
+    checkExpiration: false,
+    extraValidation: function(samlResponse, done){
+      var id = xpath.select("//*[local-name(.)='Response']", samlResponse)[0].getAttribute('ID');
+
+      if (used_ids.indexOf(id) > -1) return done(new Error('ID already used before'));
+
+      used_ids.push(id);
+
+      done();
+    }                
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
 function pemToCert(pem) {
   // if certificate doesn't have ---- begin cert --- just return the pem
   if (!/-----BEGIN CERTIFICATE-----/.test(pem.toString())) {
@@ -280,6 +306,8 @@ module.exports.start = function(options, callback){
   app.get('/login-signed-request-without-deflate', passport.authenticate('samlp-signedrequest-without-deflate', { protocol: 'samlp', RelayState: relayState }));
   app.get('/login-signed-request-with-deflate', passport.authenticate('samlp-signedrequest-with-deflate', { protocol: 'samlp', RelayState: relayState }));
   
+  app.get('/login-office', passport.authenticate('samlp-office', { protocol: 'samlp', RelayState: relayState }));
+  
   app.get('/login-custom-request-template',
       passport.authenticate('samlp-custom-request-template', { protocol: 'samlp', RelayState: relayState }));
 
@@ -330,6 +358,20 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-okta',
     passport.authenticate('samlp-okta', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-okta-extra-validation',
+    passport.authenticate('samlp-okta-extra-validation', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-office',
+    passport.authenticate('samlp-office', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }

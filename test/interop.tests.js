@@ -40,6 +40,26 @@ describe('interop', function () {
 
   });
 
+  it('should execute custom validation after valida assertion and return profile', function (done) {
+    var signedAssertion = '<Assertion ID="_1b1ffaef-86ef-42e1-92cf-cf8c9d9a4ce0" IssueInstant="2013-04-02T18:50:24.000Z" Version="2.0" xmlns="urn:oasis:names:tc:SAML:2.0:assertion"><Issuer>https://sts.windows.net/75696069-df44-4310-9bcf-08b45e3007c9/</Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><ds:Reference URI="#_1b1ffaef-86ef-42e1-92cf-cf8c9d9a4ce0"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>TzJmLs0BTPgpaPLsA7L2Kd9l1k4IBOmwIM/znV2iOPU=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>OHJCAffCNPRkwsE3RqnVPoCRSqsPrio8prABauzu2pqF418Y1QJuJehhzztY8A6kwnBUkBVE7BIyLe7kgCnBoNZWElYki1xtaLksc/Afc0TjlZvv9IJ9fQHIBiL1JA9KcySq1tu9dv/NauykBODXuljPuVTk6I4xLLWcg20o26Ov57axp42uWPpcJHtasomLmmmnAXEh6P7aB/1Vlm/MAJhWXToxacauJzFao3F9JNEuucKY6y3RPDp1Qq3vL0gq98RKuiaejayu6RjyyU2+8vCBzURul8b7ZXPUHfIOME6Q5LvbKqLhe/mzqRc+9GUg22X3B5SYjdnXjwHbBTbihA==</ds:SignatureValue><KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><X509Data><X509Certificate>MIIDPjCCAiqgAwIBAgIQVWmXY/+9RqFA/OG9kFulHDAJBgUrDgMCHQUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMTIwNjA3MDcwMDAwWhcNMTQwNjA3MDcwMDAwWjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArCz8Sn3GGXmikH2MdTeGY1D711EORX/lVXpr+ecGgqfUWF8MPB07XkYuJ54DAuYT318+2XrzMjOtqkT94VkXmxv6dFGhG8YZ8vNMPd4tdj9c0lpvWQdqXtL1TlFRpD/P6UMEigfN0c9oWDg9U7Ilymgei0UXtf1gtcQbc5sSQU0S4vr9YJp2gLFIGK11Iqg4XSGdcI0QWLLkkC6cBukhVnd6BCYbLjTYy3fNs4DzNdemJlxGl8sLexFytBF6YApvSdus3nFXaMCtBGx16HzkK9ne3lobAwL2o79bP4imEGqg+ibvyNmbrwFGnQrBc1jTF9LyQX9q+louxVfHs6ZiVwIDAQABo2IwYDBeBgNVHQEEVzBVgBCxDDsLd8xkfOLKm4Q/SzjtoS8wLTErMCkGA1UEAxMiYWNjb3VudHMuYWNjZXNzY29udHJvbC53aW5kb3dzLm5ldIIQVWmXY/+9RqFA/OG9kFulHDAJBgUrDgMCHQUAA4IBAQAkJtxxm/ErgySlNk69+1odTMP8Oy6L0H17z7XGG3w4TqvTUSWaxD4hSFJ0e7mHLQLQD7oV/erACXwSZn2pMoZ89MBDjOMQA+e6QzGB7jmSzPTNmQgMLA8fWCfqPrz6zgH+1F1gNp8hJY57kfeVPBiyjuBmlTEBsBlzolY9dd/55qqfQk6cgSeCbHCy/RU/iep0+UsRMlSgPNNmqhj5gmN2AFVCN96zF694LwuPae5CeR2ZcVknexOWHYjFM0MgUSw0ubnGl0h9AJgGyhvNGcjQqu9vd1xkupFgaN+f7P3p3EVN5csBg5H94jEcQZT7EKeTiZ6bTrpDAnrr8tDCy8ng</X509Certificate></X509Data></KeyInfo></ds:Signature><Subject><NameID>10030000838D23AF@MicrosoftOnline.com</NameID><SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer" /></Subject><Conditions NotBefore="2013-04-02T18:50:23.969Z" NotOnOrAfter="2013-04-03T06:50:23.969Z"><AudienceRestriction><Audience>spn:408153f4-5960-43dc-9d4f-6b717d772c8d</Audience></AudienceRestriction></Conditions><AttributeStatement><Attribute Name="http://schemas.microsoft.com/identity/claims/tenantid"><AttributeValue>75696069-df44-4310-9bcf-08b45e3007c9</AttributeValue></Attribute><Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"><AttributeValue>Matias</AttributeValue></Attribute><Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"><AttributeValue>matias@auth0.onmicrosoft.com</AttributeValue></Attribute><Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"><AttributeValue>Woloski</AttributeValue></Attribute><Attribute Name="http://schemas.microsoft.com/identity/claims/identityprovider"><AttributeValue>https://sts.windows.net/75696069-df44-4310-9bcf-08b45e3007c9/</AttributeValue></Attribute></AttributeStatement><AuthnStatement AuthnInstant="2013-04-02T18:50:16.000Z"><AuthnContext><AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</AuthnContextClassRef></AuthnContext></AuthnStatement></Assertion>';
+
+    var saml_passport = new SamlPassport({thumbprints: ['3464c5bdd2be7f2b6112e2f08e9c0024e33d9fe0'],
+                                          realm: 'spn:408153f4-5960-43dc-9d4f-6b717d772c8d',
+                                          checkExpiration: false, 
+                                          checkRecipient: false,
+                                          extraValidation: function(samlReponse, done){
+                                            done();
+                                          }    
+                                      
+                                    }); // dont check expiration since we are harcoding the token
+    var profile = saml_passport.validateSamlAssertion(signedAssertion, function(err, profile) {
+      assert.ok(err);
+      expect(err.message).to.equal('There was an error validating SAMLResponse');
+      done();
+    });
+
+  });
+
   describe('signed samlp response and assertion from open feide', function () {
     var user, r, bod, $;
 
@@ -123,6 +143,37 @@ describe('interop', function () {
       var user = JSON.parse(bod);
       expect(user['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']).to.equal('admin@kluglabs.com');
       expect(user['Role']).to.equal('Admin');
+    });
+  });
+
+  describe('signed assertion from okta with extra validation', function () {
+    var r, bod, e;
+
+    // SAMLResponse comes from Okta
+    beforeEach(function (done) {
+      request.post({
+        jar: request.jar(), 
+        uri: 'http://localhost:5051/callback/samlp-okta-extra-validation',
+        form: { SAMLResponse: 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c2FtbDJwOlJlc3BvbnNlIHhtbG5zOnNhbWwycD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIiBEZXN0aW5hdGlvbj0iaHR0cHM6Ly9hdXRoMDE0NS5hdXRoMC5jb20iIElEPSJpZDgxMzIzMDI4Njg0Njg5ODM4OTkzODY4MzEiIElzc3VlSW5zdGFudD0iMjAxMy0wOC0wM1QyMTo1NDo0My45NDJaIiBWZXJzaW9uPSIyLjAiPjxzYW1sMjpJc3N1ZXIgeG1sbnM6c2FtbDI9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iIEZvcm1hdD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOm5hbWVpZC1mb3JtYXQ6ZW50aXR5Ij5odHRwOi8vd3d3Lm9rdGEuY29tL2s3eGtocTBqVUhVUFFBWFZNVUFOPC9zYW1sMjpJc3N1ZXI+PHNhbWwycDpTdGF0dXMgeG1sbnM6c2FtbDJwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiPjxzYW1sMnA6U3RhdHVzQ29kZSBWYWx1ZT0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnN0YXR1czpTdWNjZXNzIi8+PC9zYW1sMnA6U3RhdHVzPjxzYW1sMjpBc3NlcnRpb24geG1sbnM6c2FtbDI9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iIElEPSJpZDgxMzIzMDI4Njg1NDEwMTk3NTU0MTQxMjEiIElzc3VlSW5zdGFudD0iMjAxMy0wOC0wM1QyMTo1NDo0My45NDJaIiBWZXJzaW9uPSIyLjAiIHhtbG5zOnhzPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSI+PHNhbWwyOklzc3VlciBGb3JtYXQ9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpuYW1laWQtZm9ybWF0OmVudGl0eSIgeG1sbnM6c2FtbDI9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iPmh0dHA6Ly93d3cub2t0YS5jb20vazd4a2hxMGpVSFVQUUFYVk1VQU48L3NhbWwyOklzc3Vlcj48ZHM6U2lnbmF0dXJlIHhtbG5zOmRzPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjIj48ZHM6U2lnbmVkSW5mbz48ZHM6Q2Fub25pY2FsaXphdGlvbk1ldGhvZCBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvMTAveG1sLWV4Yy1jMTRuIyIvPjxkczpTaWduYXR1cmVNZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjcnNhLXNoYTEiLz48ZHM6UmVmZXJlbmNlIFVSST0iI2lkODEzMjMwMjg2ODU0MTAxOTc1NTQxNDEyMSI+PGRzOlRyYW5zZm9ybXM+PGRzOlRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlIi8+PGRzOlRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvMTAveG1sLWV4Yy1jMTRuIyI+PGVjOkluY2x1c2l2ZU5hbWVzcGFjZXMgeG1sbnM6ZWM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvMTAveG1sLWV4Yy1jMTRuIyIgUHJlZml4TGlzdD0ieHMiLz48L2RzOlRyYW5zZm9ybT48L2RzOlRyYW5zZm9ybXM+PGRzOkRpZ2VzdE1ldGhvZCBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNzaGExIi8+PGRzOkRpZ2VzdFZhbHVlPjRHK3V2ZUttdGlCMUVrWTVCQXQrOGxtUXdqST08L2RzOkRpZ2VzdFZhbHVlPjwvZHM6UmVmZXJlbmNlPjwvZHM6U2lnbmVkSW5mbz48ZHM6U2lnbmF0dXJlVmFsdWU+UTgwTjZGVXI1L1lQdEV6UmxSZE1vUHUrYkwwTXNzRHhOVVkreXh5a3pibXhzSTBqb0VvL1NtbVNnWnJEWVFLVGxsWmsvS2Z6Qk1QRlY5eUJINCttRXpDVTVFM3h1Q3M5OWpaemFmY3czSzhtSU1USnkxWUh4amMzNTlkMjdSNXM1MGk5dzVQSHN1c1JvdjBNalFJb0oydzQ4R3k0RW5ZYVZpcUJSM1VWRXFFPTwvZHM6U2lnbmF0dXJlVmFsdWU+PGRzOktleUluZm8+PGRzOlg1MDlEYXRhPjxkczpYNTA5Q2VydGlmaWNhdGU+TUlJQ25UQ0NBZ2FnQXdJQkFnSUdBVUJHSHhxVU1BMEdDU3FHU0liM0RRRUJCUVVBTUlHUk1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFRwpBMVVFQ0F3S1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ3d05VMkZ1SUVaeVlXNWphWE5qYnpFTk1Bc0dBMVVFQ2d3RVQydDBZVEVVCk1CSUdBMVVFQ3d3TFUxTlBVSEp2ZG1sa1pYSXhFakFRQmdOVkJBTU1DV3RzZFdkc1lXSnpNakVjTUJvR0NTcUdTSWIzRFFFSkFSWU4KYVc1bWIwQnZhM1JoTG1OdmJUQWVGdzB4TXpBNE1ETXlNVE00TXpoYUZ3MDBNekE0TURNeU1UTTVNemhhTUlHUk1Rc3dDUVlEVlFRRwpFd0pWVXpFVE1CRUdBMVVFQ0F3S1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ3d05VMkZ1SUVaeVlXNWphWE5qYnpFTk1Bc0dBMVVFCkNnd0VUMnQwWVRFVU1CSUdBMVVFQ3d3TFUxTlBVSEp2ZG1sa1pYSXhFakFRQmdOVkJBTU1DV3RzZFdkc1lXSnpNakVjTUJvR0NTcUcKU0liM0RRRUpBUllOYVc1bWIwQnZhM1JoTG1OdmJUQ0JuekFOQmdrcWhraUc5dzBCQVFFRkFBT0JqUUF3Z1lrQ2dZRUFzQ0I5bEpUSApxQjd2ZE01amVPSDg0Y1c4dTdJSFl2NC9PQVBZRjBmQlllOXdKeTE5Q2d5TTJPZ2lBU3VBY0l0bkg0V2hCK2lvMlpQd2IvWHdsN1V1CjRYbVVFMGwrbWtDTnVEWXA1ZlhUWnh3djVHNkh2a0F4WFppbzBSazlUMFZFVENyb3hncFM1THhRL28vb3dqUjM5Uzd4elJuajZkZFgKM01xMnlHakt5QmNDQXdFQUFUQU5CZ2txaGtpRzl3MEJBUVVGQUFPQmdRQUIxcUdOcVNOTExXcStSUGNQK3dPYVd0WXBKT0o4L01iWgpFV1dtOS9LS0hLWE02Si96Z1VVSVhaaTNjek1lTytZK1gxNFBSOGxHWG9BSGY1Yi9KYXZHOUZtRnZSbjRmR2E0NVZUVm8yR2ZNTjZLCmFJS0Ywb2JlQ2JZaS9RVWY4QitYaTF0U0lKbTFWQ0tSRTdubmxpUS9UekdhTnVsZ1dleVRiVmtHMC9YOExRPT08L2RzOlg1MDlDZXJ0aWZpY2F0ZT48L2RzOlg1MDlEYXRhPjwvZHM6S2V5SW5mbz48L2RzOlNpZ25hdHVyZT48c2FtbDI6U3ViamVjdCB4bWxuczpzYW1sMj0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOmFzc2VydGlvbiI+PHNhbWwyOk5hbWVJRCBGb3JtYXQ9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjEuMTpuYW1laWQtZm9ybWF0OmVtYWlsQWRkcmVzcyI+YWRtaW5Aa2x1Z2xhYnMuY29tPC9zYW1sMjpOYW1lSUQ+PHNhbWwyOlN1YmplY3RDb25maXJtYXRpb24gTWV0aG9kPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6Y206YmVhcmVyIj48c2FtbDI6U3ViamVjdENvbmZpcm1hdGlvbkRhdGEgTm90T25PckFmdGVyPSIyMDEzLTA4LTAzVDIxOjU5OjQzLjk0MloiIFJlY2lwaWVudD0iaHR0cHM6Ly9hdXRoMDE0NS5hdXRoMC5jb20iLz48L3NhbWwyOlN1YmplY3RDb25maXJtYXRpb24+PC9zYW1sMjpTdWJqZWN0PjxzYW1sMjpDb25kaXRpb25zIE5vdEJlZm9yZT0iMjAxMy0wOC0wM1QyMTo0OTo0My45NDNaIiBOb3RPbk9yQWZ0ZXI9IjIwMTMtMDgtMDNUMjE6NTk6NDMuOTQyWiIgeG1sbnM6c2FtbDI9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iPjxzYW1sMjpBdWRpZW5jZVJlc3RyaWN0aW9uPjxzYW1sMjpBdWRpZW5jZT5odHRwczovL2F1dGgwMTQ1LmF1dGgwLmNvbTwvc2FtbDI6QXVkaWVuY2U+PC9zYW1sMjpBdWRpZW5jZVJlc3RyaWN0aW9uPjwvc2FtbDI6Q29uZGl0aW9ucz48c2FtbDI6QXV0aG5TdGF0ZW1lbnQgQXV0aG5JbnN0YW50PSIyMDEzLTA4LTAzVDIxOjU0OjQzLjk0MloiIFNlc3Npb25JbmRleD0iaWQxMzc1NTY2ODgzOTQyLjY4NzYxMDQzNyIgeG1sbnM6c2FtbDI9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iPjxzYW1sMjpBdXRobkNvbnRleHQ+PHNhbWwyOkF1dGhuQ29udGV4dENsYXNzUmVmPnVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphYzpjbGFzc2VzOlBhc3N3b3JkUHJvdGVjdGVkVHJhbnNwb3J0PC9zYW1sMjpBdXRobkNvbnRleHRDbGFzc1JlZj48L3NhbWwyOkF1dGhuQ29udGV4dD48L3NhbWwyOkF1dGhuU3RhdGVtZW50PjxzYW1sMjpBdHRyaWJ1dGVTdGF0ZW1lbnQgeG1sbnM6c2FtbDI9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iPjxzYW1sMjpBdHRyaWJ1dGUgTmFtZT0iUm9sZSIgTmFtZUZvcm1hdD0ibnMiPjxzYW1sMjpBdHRyaWJ1dGVWYWx1ZSB4bWxuczp4cz0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhzaTp0eXBlPSJ4czpzdHJpbmciPkFkbWluPC9zYW1sMjpBdHRyaWJ1dGVWYWx1ZT48L3NhbWwyOkF0dHJpYnV0ZT48L3NhbWwyOkF0dHJpYnV0ZVN0YXRlbWVudD48L3NhbWwyOkFzc2VydGlvbj48L3NhbWwycDpSZXNwb25zZT4=' }
+      }, function(err, response, body) {
+        r = response;
+        bod = body;
+        e = err;
+        done();
+      });
+    });
+
+    it('should validate response and not signature and be OK', function(){
+      expect(r.statusCode)
+            .to.equal(200);
+      
+      var user = JSON.parse(bod);
+      expect(user['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']).to.equal('admin@kluglabs.com');
+      expect(user['Role']).to.equal('Admin');
+    });
+
+    it('should validate response and not signature and be return an error', function(){
+      expect(r.statusCode).to.equal(400);
     });
   });
 
