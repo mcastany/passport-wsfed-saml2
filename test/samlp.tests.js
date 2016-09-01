@@ -574,7 +574,7 @@ describe('samlp (unit tests)', function () {
     var samlpResponseWithStatusNotMappedStatus = '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="id" InResponseTo="response" Version="2.0" IssueInstant="2014-02-25T15:20:20Z" Destination="https://auth0-dev-ed.my.salesforce.com"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:fixture-test</saml:Issuer><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status></samlp:Response>';
 
     it('shuold return error for AuthnFailed status with generic message', function(done){
-      var samlp = new Samlp({});
+      var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusResponderAndAuthnFailed, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('AuthenticationFailedError');
@@ -584,7 +584,7 @@ describe('samlp (unit tests)', function () {
     });
 
     it('shuold return error for AuthnFailed status with specific message', function(done){
-      var samlp = new Samlp({});
+      var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusResponderAndAuthnFailedWithMessage, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('AuthenticationFailedError');
@@ -594,7 +594,7 @@ describe('samlp (unit tests)', function () {
     });
 
     it('should return error for Responder status with generic message', function(done){
-      var samlp = new Samlp({});
+      var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusResponder, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('AuthenticationFailedError');
@@ -604,7 +604,7 @@ describe('samlp (unit tests)', function () {
     });
 
     it('should return error for Responder status with specific message', function(done){
-      var samlp = new Samlp({});
+      var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('AuthenticationFailedError');
@@ -614,11 +614,46 @@ describe('samlp (unit tests)', function () {
     });
 
     it('should return \'saml response does not contain an Assertion element\' error', function(done){
-      var samlp = new Samlp({});
+      var samlp = new Samlp({ checkDestination: false });
       samlp.validateSamlResponse(samlpResponseWithStatusNotMappedStatus, function (err) {
         expect(err).to.be.ok;
         expect(err.name).to.equals('Error');
         expect(err.message).to.equal('saml response does not contain an Assertion element (Status: urn:oasis:names:tc:SAML:2.0:status:Success)');
+        done();
+      });
+    });
+
+    it.skip('should return error for Destination does not match', function(done){
+      var samlp = new Samlp({ destinationUrl: 'invalid' });
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('Destination endpoint https://auth0-dev-ed.my.salesforce.com did not match invalid');
+        done();
+      });
+    });
+
+    it('should return error for if isValidResponseID fails', function(done){
+      var samlp = new Samlp({ destinationUrl: 'invalid', isValidResponseID: function(samlResponseID, done) {
+        return done(new Error('Invalid response id'))
+      } });
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('Invalid response id');
+        done();
+      });
+    });
+
+    it('should return error for if isValidInResponseTo fails', function(done){
+      var samlp = new Samlp({ destinationUrl: 'invalid', isValidInResponseTo: function(inReponseTo, done) {
+        return done(new Error('Invalid inResponseTo'))
+      } });
+
+      samlp.validateSamlResponse(samlpResponseWithStatusResponderWithMessage, function (err) {
+        expect(err).to.be.ok;
+        expect(err.name).to.equals('Error');
+        expect(err.message).to.equal('Invalid inResponseTo');
         done();
       });
     });
@@ -742,7 +777,6 @@ function doSamlpFlow(samlRequestUrl, callbackEndpoint, callback) {
     var $ = cheerio.load(b);
     var SAMLResponse = $('input[name="SAMLResponse"]').attr('value');
     var RelayState = $('input[name="RelayState"]').attr('value');
-
 
     request.post({
       jar: request.jar(),
