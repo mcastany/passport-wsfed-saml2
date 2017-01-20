@@ -15,7 +15,8 @@ passport.use('samlp', new Strategy({
     path: '/callback',
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
-    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309']
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
+    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com'
   }, function(profile, done) {
     return done(null, profile);
   })
@@ -95,7 +96,8 @@ passport.use('samlp-signedresponse', new Strategy(
     path: '/callback',
     realm: 'https://auth0-dev-ed.my.salesforce.com',
     identityProviderUrl: identityProviderUrl,
-    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309']
+    thumbprints: ['5ca6e1202eafc0a63a5b93a43572eb2376fed309'],
+    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com'
   },
   function(profile, done) {
     return done(null, profile);
@@ -107,7 +109,8 @@ passport.use('samlp-signedresponse-invalidcert', new Strategy(
     path: '/callback',
     realm: 'urn:fixture-test',
     identityProviderUrl: identityProviderUrl,
-    thumbprints: ['11111111111111111a5b93a43572eb2376fed309']
+    thumbprints: ['11111111111111111a5b93a43572eb2376fed309'],
+    recipientUrl: 'https://auth0-dev-ed.my.salesforce.com'
   },
   function(profile, done) {
     return done(null, profile);
@@ -131,6 +134,7 @@ passport.use('samlp-signedresponse-signedassertion', new Strategy(
     path: '/callback',
     realm: 'urn:auth0:login-dev3',
     thumbprints: ['C9ED4DFB07CAF13FC21E0FEC1572047EB8A7A4CB'],
+    recipientUrl: 'https://login-dev3.auth0.com:3000/login/callback',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
   function(profile, done) {
@@ -143,6 +147,7 @@ passport.use('samlp-ping', new Strategy(
     path: '/callback',
     realm: 'urn:auth0:login-dev3',
     thumbprints: ['44340220770a348444be34970939cff8a2d74f08'],
+    recipientUrl: 'https://login-dev3.auth0.com:3000/login/callback',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
   function(profile, done) {
@@ -155,6 +160,7 @@ passport.use('samlp-okta', new Strategy(
     path: '/callback',
     realm: 'https://auth0145.auth0.com',
     thumbprints: ['a0c7dbb790e3476d3c5dd236f9f2060b1fd6e253'],
+    recipientUrl: 'https://auth0145.auth0.com',
     checkExpiration: false // we are using a precomputed assertion generated from a sample idp feide
   },
   function(profile, done) {
@@ -162,13 +168,40 @@ passport.use('samlp-okta', new Strategy(
   })
 );
 
+function pemToCert(pem) {
+  // if certificate doesn't have ---- begin cert --- just return the pem
+  if (!/-----BEGIN CERTIFICATE-----/.test(pem.toString())) {
+    return pem.toString();
+  }
+
+  var cert = /-----BEGIN CERTIFICATE-----([^-]*)-----END CERTIFICATE-----/g.exec(pem.toString());
+  if (cert.length > 0) {
+    return cert[1].replace(/[\n|\r\n]/g, '');
+  }
+
+  return null;
+}
+
 passport.use('samlp-with-utf8', new Strategy(
   {
     path: '/callback',
     thumbprints: ['42FA24A83E107F6842E05D2A2CA0A0A0CA8A2031'],
     decryptionKey: fs.readFileSync(path.join(__dirname, '../test-decryption.key')),
+    recipientUrl: 'https://fmi-test.auth0.com/login/callback',
     checkExpiration: false, // we are using a precomputed assertion generated from a sample idp feide
     checkAudience: false
+  },
+  function(profile, done) {
+    return done(null, profile);
+  })
+);
+
+passport.use('samlp-with-dsig-at-root', new Strategy(
+  {
+    path: '/callback',
+    checkExpiration: false, // we are using a precomputed assertion generated from a sample idp
+    checkAudience: false,
+    cert: pemToCert(fs.readFileSync(path.join(__dirname, '../test-auth0.pem')))
   },
   function(profile, done) {
     return done(null, profile);
@@ -227,7 +260,8 @@ module.exports.start = function(options, callback){
         issuer:             'urn:fixture-test',
         getPostURL:         getPostURL,
         cert:               credentials.cert,
-        key:                credentials.key
+        key:                credentials.key,
+        recipient:          'https://auth0-dev-ed.my.salesforce.com'
       }, module.exports.options))(req, res);
   });
 
@@ -243,7 +277,6 @@ module.exports.start = function(options, callback){
 
   app.post('/callback',
     function(req, res, next) {
-      //console.log('req.body');
       next();
     },
     passport.authenticate('samlp', { protocol: 'samlp' }),
@@ -296,6 +329,13 @@ module.exports.start = function(options, callback){
 
   app.post('/callback/samlp-with-utf8',
     passport.authenticate('samlp-with-utf8', { protocol: 'samlp' }),
+    function(req, res) {
+      res.json(req.user);
+    }
+  );
+
+  app.post('/callback/samlp-with-dsig-at-root',
+    passport.authenticate('samlp-with-dsig-at-root', { protocol: 'samlp' }),
     function(req, res) {
       res.json(req.user);
     }

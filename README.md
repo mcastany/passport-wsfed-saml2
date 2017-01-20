@@ -17,7 +17,7 @@ Passport-wsfed-saml2 has been tested to work with both [Windows Azure Active Dir
 
 ### Configure strategy
 
-This example utilizes a development namespace (auth10-dev) on [Windows Azure Access Control Service](https://www.windowsazure.com/en-us/home/features/identity/) and is using Google as the only identity provider configured for the sample application. 
+This example utilizes a development namespace (auth10-dev) on [Windows Azure Access Control Service](https://www.windowsazure.com/en-us/home/features/identity/) and is using Google as the only identity provider configured for the sample application.
 
 
 ```javascript
@@ -55,7 +55,7 @@ app.post('/login/callback',
 
 ### Jwt
 
-Although this started as wsfed&saml we added support for wsfed&jwt. Usage is 
+Although this started as wsfed&saml we added support for wsfed&jwt. Usage is
 
 ~~~javascript
 passport.use(new wsfedsaml2(
@@ -77,6 +77,53 @@ passport.use(new wsfedsaml2(
 ));
 ~~~
 
-### License
+### Configure strategy for ADFS (WS-Fed)
 
-MIT 2013 - AUTH10 LLC
+This example utilizes a strategy with ADFS using WS-Fed.
+
+```javascript
+passport.use('wsfed-saml2', new wsfedsaml2({
+	// ADFS RP identifier
+	realm: 'urn:node:wsfedapp',
+	identityProviderUrl: 'https://my-adfs/adfs/ls',
+	// ADFS token signing certificate
+	thumbprint: '5D27....D27E'
+	// or options.cert: fs.readFileSync("adfs_signing_key.cer") 
+}, function (profile, done) {
+ // ...
+}));
+
+```
+
+### Configure strategy for ADFS (SAMLp)
+
+This example utilizes a strategy using SAMLp and RP token encryption.
+
+```javascript
+passport.use('wsfed-saml2', new wsfedsaml2({
+	// ADFS RP identifier
+	realm: 'urn:node:samlapp',
+	identityProviderUrl: 'https://my-adfs/adfs/ls',
+    // ADFS token signing certificate
+    thumbprint: '5D27...D27E',
+	// or options.cert: fs.readFileSync("adfs_signing_key.cer") 
+    protocol: "samlp",
+	// This is the private key (use case where ADFS 
+	// is configured for RP token encryption)
+    decryptionKey: fs.readFileSync("server.key")
+}, function (profile, done) {
+ // ...
+}));
+```
+
+## Issue Reporting
+
+If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
+
+## Author
+
+[Auth0](auth0.com)
+
+## License
+
+This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
